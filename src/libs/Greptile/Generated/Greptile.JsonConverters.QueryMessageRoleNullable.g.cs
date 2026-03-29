@@ -1,0 +1,60 @@
+#nullable enable
+
+namespace Greptile.JsonConverters
+{
+    /// <inheritdoc />
+    public sealed class QueryMessageRoleNullableJsonConverter : global::System.Text.Json.Serialization.JsonConverter<global::Greptile.QueryMessageRole?>
+    {
+        /// <inheritdoc />
+        public override global::Greptile.QueryMessageRole? Read(
+            ref global::System.Text.Json.Utf8JsonReader reader,
+            global::System.Type typeToConvert,
+            global::System.Text.Json.JsonSerializerOptions options)
+        {
+            switch (reader.TokenType)
+            {
+                case global::System.Text.Json.JsonTokenType.String:
+                {
+                    var stringValue = reader.GetString();
+                    if (stringValue != null)
+                    {
+                        return global::Greptile.QueryMessageRoleExtensions.ToEnum(stringValue);
+                    }
+                    
+                    break;
+                }
+                case global::System.Text.Json.JsonTokenType.Number:
+                {
+                    var numValue = reader.GetInt32();
+                    return (global::Greptile.QueryMessageRole)numValue;
+                }
+                case global::System.Text.Json.JsonTokenType.Null:
+                {
+                    return default(global::Greptile.QueryMessageRole?);
+                }
+                default:
+                    throw new global::System.ArgumentOutOfRangeException(nameof(reader));
+            }
+
+            return default;
+        }
+
+        /// <inheritdoc />
+        public override void Write(
+            global::System.Text.Json.Utf8JsonWriter writer,
+            global::Greptile.QueryMessageRole? value,
+            global::System.Text.Json.JsonSerializerOptions options)
+        {
+            writer = writer ?? throw new global::System.ArgumentNullException(nameof(writer));
+
+            if (value == null)
+            {
+                writer.WriteNullValue();
+            }
+            else
+            {
+                writer.WriteStringValue(global::Greptile.QueryMessageRoleExtensions.ToValueString(value.Value));
+            }
+        }
+    }
+}

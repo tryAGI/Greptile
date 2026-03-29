@@ -1,0 +1,422 @@
+openapi: 3.0.3
+info:
+  title: Greptile API
+  description: >
+    AI-powered codebase intelligence API. Greptile allows you to index repositories,
+    query codebases in natural language, and search for relevant code snippets.
+  version: "2.0"
+  contact:
+    name: Greptile
+    url: https://www.greptile.com
+  termsOfService: https://www.greptile.com/terms
+servers:
+  - url: https://api.greptile.com/v2
+    description: Greptile API v2
+security:
+  - BearerAuth: []
+paths:
+  /repositories:
+    post:
+      operationId: indexRepository
+      summary: Index a repository
+      description: >
+        Initiates processing or reprocessing of a specified repository.
+        The repository must be indexed before it can be queried or searched.
+        Indexing may take some time for large repositories.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IndexRepositoryRequest'
+      responses:
+        '200':
+          description: Repository indexing initiated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IndexRepositoryResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /repositories/{repositoryId}:
+    get:
+      operationId: getRepositoryInfo
+      summary: Get repository information
+      description: >
+        Retrieves the current status and information about a repository's index.
+        The repositoryId should be URL-encoded in the format remote:branch:owner/repository.
+      parameters:
+        - name: repositoryId
+          in: path
+          required: true
+          description: >
+            The repository identifier in the format remote:branch:owner/repository
+            (URL-encoded, e.g., github%3Amain%3Aowner%2Frepo)
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Repository information retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RepositoryInfo'
+        '404':
+          description: Repository not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /query:
+    post:
+      operationId: queryCodebase
+      summary: Query a codebase
+      description: >
+        Query repositories in natural language and get back an AI-generated answer
+        along with a list of relevant source files, functions, and classes.
+        The query must be formatted as a messages array following the OpenAI Chat format.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QueryRequest'
+      responses:
+        '200':
+          description: Query response with answer and sources
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueryResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /search:
+    post:
+      operationId: searchCodebase
+      summary: Search a codebase
+      description: >
+        Search repositories in natural language and get back a list of relevant
+        code files, functions, and snippets. Similar to the query endpoint but
+        without the AI-generated answer. Use this endpoint when you only need
+        the source references.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchRequest'
+      responses:
+        '200':
+          description: Search results with sources
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: >
+        Greptile API key. Obtain from https://app.greptile.com/login.
+        Pass as Bearer token in the Authorization header.
+  schemas:
+    IndexRepositoryRequest:
+      type: object
+      required:
+        - remote
+        - repository
+        - branch
+      properties:
+        remote:
+          type: string
+          description: The remote service hosting the repository
+          enum:
+            - github
+            - gitlab
+          example: github
+        repository:
+          type: string
+          description: The repository identifier in the format owner/repository
+          example: greptileai/examples
+        branch:
+          type: string
+          description: The branch to index
+          example: main
+        reload:
+          type: boolean
+          description: Whether to force re-indexing if the repository has already been indexed
+          default: false
+        notify:
+          type: boolean
+          description: Whether to receive an email notification upon completion
+          default: false
+    IndexRepositoryResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: A message indicating the status of the indexing request
+          example: Repository indexing initiated
+        statusEndpoint:
+          type: string
+          description: URL to check the status of the indexing operation
+          example: https://api.greptile.com/v2/repositories/github%3Amain%3Agreptileai%2Fexamples
+        repositoryId:
+          type: string
+          description: The unique identifier for the repository
+          example: github:main:greptileai/examples
+    RepositoryInfo:
+      type: object
+      properties:
+        repository:
+          type: string
+          description: The repository name in owner/repository format
+          example: greptileai/examples
+        remote:
+          type: string
+          description: The remote service hosting the repository
+          example: github
+        branch:
+          type: string
+          description: The branch that was indexed
+          example: main
+        private:
+          type: boolean
+          description: Whether the repository is private
+        status:
+          type: string
+          description: The current indexing status
+          enum:
+            - submitted
+            - cloning
+            - processing
+            - completed
+            - indexed
+            - failed
+        filesProcessed:
+          type: integer
+          description: The number of files that have been processed
+          example: 256
+        numFiles:
+          type: integer
+          description: The total number of files in the repository
+          example: 256
+        sha:
+          type: string
+          description: The Git commit SHA of the indexed version
+          example: abc123def456
+        sampleQuestions:
+          type: array
+          description: Sample questions that can be asked about the repository
+          items:
+            type: string
+    QueryMessage:
+      type: object
+      required:
+        - content
+        - role
+      properties:
+        id:
+          type: string
+          description: A unique identifier for the message
+          example: msg_1
+        content:
+          type: string
+          description: The content of the message
+          example: What does this repository do?
+        role:
+          type: string
+          description: The role of the message sender
+          enum:
+            - user
+            - assistant
+          example: user
+    RepositoryRef:
+      type: object
+      required:
+        - remote
+        - repository
+        - branch
+      properties:
+        remote:
+          type: string
+          description: The remote service hosting the repository
+          enum:
+            - github
+            - gitlab
+          example: github
+        repository:
+          type: string
+          description: The repository identifier in owner/repository format
+          example: greptileai/examples
+        branch:
+          type: string
+          description: The branch to query
+          example: main
+    QueryRequest:
+      type: object
+      required:
+        - messages
+        - repositories
+      properties:
+        messages:
+          type: array
+          description: >
+            The query messages in OpenAI Chat format. Can be a single message
+            or a conversation history for multi-turn queries.
+          items:
+            $ref: '#/components/schemas/QueryMessage'
+          minItems: 1
+        repositories:
+          type: array
+          description: The repositories to query
+          items:
+            $ref: '#/components/schemas/RepositoryRef'
+          minItems: 1
+        sessionId:
+          type: string
+          description: >
+            An optional session identifier for conversation continuity.
+            Use the same sessionId across queries to maintain context.
+          example: test-session-id
+        stream:
+          type: boolean
+          description: Whether to stream the response
+          default: false
+        genius:
+          type: boolean
+          description: >
+            Enable genius mode for more thorough analysis. Results are smarter
+            but may take longer to generate.
+          default: false
+    QueryResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The AI-generated answer to the query
+        sources:
+          type: array
+          description: The relevant source code locations
+          items:
+            $ref: '#/components/schemas/Source'
+        sessionId:
+          type: string
+          description: The session identifier for conversation continuity
+    SearchRequest:
+      type: object
+      required:
+        - messages
+        - repositories
+      properties:
+        messages:
+          type: array
+          description: The search query formatted as a messages array
+          items:
+            $ref: '#/components/schemas/QueryMessage'
+          minItems: 1
+        repositories:
+          type: array
+          description: The repositories to search
+          items:
+            $ref: '#/components/schemas/RepositoryRef'
+          minItems: 1
+        sessionId:
+          type: string
+          description: An optional session identifier
+        genius:
+          type: boolean
+          description: Enable genius mode for more thorough search
+          default: false
+    SearchResponse:
+      type: object
+      properties:
+        sources:
+          type: array
+          description: The relevant source code locations
+          items:
+            $ref: '#/components/schemas/Source'
+    Source:
+      type: object
+      properties:
+        repository:
+          type: string
+          description: The repository name in owner/repository format
+          example: greptileai/examples
+        remote:
+          type: string
+          description: The remote service
+          example: github
+        branch:
+          type: string
+          description: The branch
+          example: main
+        filepath:
+          type: string
+          description: The file path within the repository
+          example: src/core/main.js
+        linestart:
+          type: integer
+          description: The starting line number of the relevant code
+          example: 10
+        lineend:
+          type: integer
+          description: The ending line number of the relevant code
+          example: 45
+        summary:
+          type: string
+          description: A brief summary of the relevant code section
+          example: Core functionality implementation
+        distance:
+          type: number
+          format: double
+          description: >
+            The relevance distance score. Lower values indicate higher relevance.
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message
+        error:
+          type: string
+          description: Error details
