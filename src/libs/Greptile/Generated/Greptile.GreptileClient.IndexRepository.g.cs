@@ -290,6 +290,7 @@ namespace Greptile
             bool? notify = default,
             global::System.Threading.CancellationToken cancellationToken = default)
         {
+
             var __request = new global::Greptile.IndexRepositoryRequest
             {
                 Remote = remote,
