@@ -5,6 +5,25 @@ namespace Greptile
 {
     public partial class GreptileClient
     {
+
+
+        private static readonly global::Greptile.EndPointSecurityRequirement s_IndexRepositorySecurityRequirement0 =
+            new global::Greptile.EndPointSecurityRequirement
+            {
+                Authorizations = new global::Greptile.EndPointAuthorizationRequirement[]
+                {                    new global::Greptile.EndPointAuthorizationRequirement
+                    {
+                        Type = "Http",
+                        Location = "Header",
+                        Name = "Bearer",
+                        FriendlyName = "Bearer",
+                    },
+                },
+            };
+        private static readonly global::Greptile.EndPointSecurityRequirement[] s_IndexRepositorySecurityRequirements =
+            new global::Greptile.EndPointSecurityRequirement[]
+            {                s_IndexRepositorySecurityRequirement0,
+            };
         partial void PrepareIndexRepositoryArguments(
             global::System.Net.Http.HttpClient httpClient,
             global::Greptile.IndexRepositoryRequest request);
@@ -41,9 +60,15 @@ namespace Greptile
                 httpClient: HttpClient,
                 request: request);
 
+
+            var __authorizations = global::Greptile.EndPointSecurityResolver.ResolveAuthorizations(
+                availableAuthorizations: Authorizations,
+                securityRequirements: s_IndexRepositorySecurityRequirements,
+                operationName: "IndexRepositoryAsync");
+
             var __pathBuilder = new global::Greptile.PathBuilder(
                 path: "/repositories",
-                baseUri: HttpClient.BaseAddress); 
+                baseUri: HttpClient.BaseAddress);
             var __path = __pathBuilder.ToString();
             using var __httpRequest = new global::System.Net.Http.HttpRequestMessage(
                 method: global::System.Net.Http.HttpMethod.Post,
@@ -53,7 +78,7 @@ namespace Greptile
             __httpRequest.VersionPolicy = global::System.Net.Http.HttpVersionPolicy.RequestVersionOrHigher;
 #endif
 
-            foreach (var __authorization in Authorizations)
+            foreach (var __authorization in __authorizations)
             {
                 if (__authorization.Type == "Http" ||
                     __authorization.Type == "OAuth2")

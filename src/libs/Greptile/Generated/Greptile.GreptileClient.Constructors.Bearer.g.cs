@@ -6,6 +6,7 @@ namespace Greptile
     public sealed partial class GreptileClient
     {
         /// <inheritdoc cref="GreptileClient(global::System.Net.Http.HttpClient?, global::System.Uri?, global::System.Collections.Generic.List{global::Greptile.EndPointAuthorization}?, bool)"/>
+
         public GreptileClient(
             string apiKey,
             global::System.Net.Http.HttpClient? httpClient = null,
