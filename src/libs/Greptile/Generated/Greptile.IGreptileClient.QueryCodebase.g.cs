@@ -9,11 +9,13 @@ namespace Greptile
         /// Query repositories in natural language and get back an AI-generated answer along with a list of relevant source files, functions, and classes. The query must be formatted as a messages array following the OpenAI Chat format.
         /// </summary>
         /// <param name="request"></param>
+        /// <param name="requestOptions">Per-request overrides such as headers, query parameters, timeout, retries, and response buffering.</param>
         /// <param name="cancellationToken">The token to cancel the operation with</param>
         /// <exception cref="global::Greptile.ApiException"></exception>
         global::System.Threading.Tasks.Task<global::Greptile.QueryResponse> QueryCodebaseAsync(
 
             global::Greptile.QueryRequest request,
+            global::Greptile.AutoSDKRequestOptions? requestOptions = default,
             global::System.Threading.CancellationToken cancellationToken = default);
         /// <summary>
         /// Query a codebase<br/>
@@ -37,6 +39,7 @@ namespace Greptile
         /// Enable genius mode for more thorough analysis. Results are smarter but may take longer to generate.<br/>
         /// Default Value: false
         /// </param>
+        /// <param name="requestOptions">Per-request overrides such as headers, query parameters, timeout, retries, and response buffering.</param>
         /// <param name="cancellationToken">The token to cancel the operation with</param>
         /// <exception cref="global::System.InvalidOperationException"></exception>
         global::System.Threading.Tasks.Task<global::Greptile.QueryResponse> QueryCodebaseAsync(
@@ -45,6 +48,7 @@ namespace Greptile
             string? sessionId = default,
             bool? stream = default,
             bool? genius = default,
+            global::Greptile.AutoSDKRequestOptions? requestOptions = default,
             global::System.Threading.CancellationToken cancellationToken = default);
     }
 }
