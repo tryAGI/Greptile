@@ -9,11 +9,13 @@ namespace Greptile
         /// Initiates processing or reprocessing of a specified repository. The repository must be indexed before it can be queried or searched. Indexing may take some time for large repositories.
         /// </summary>
         /// <param name="request"></param>
+        /// <param name="requestOptions">Per-request overrides such as headers, query parameters, timeout, retries, and response buffering.</param>
         /// <param name="cancellationToken">The token to cancel the operation with</param>
         /// <exception cref="global::Greptile.ApiException"></exception>
         global::System.Threading.Tasks.Task<global::Greptile.IndexRepositoryResponse> IndexRepositoryAsync(
 
             global::Greptile.IndexRepositoryRequest request,
+            global::Greptile.AutoSDKRequestOptions? requestOptions = default,
             global::System.Threading.CancellationToken cancellationToken = default);
         /// <summary>
         /// Index a repository<br/>
@@ -39,6 +41,7 @@ namespace Greptile
         /// Whether to receive an email notification upon completion<br/>
         /// Default Value: false
         /// </param>
+        /// <param name="requestOptions">Per-request overrides such as headers, query parameters, timeout, retries, and response buffering.</param>
         /// <param name="cancellationToken">The token to cancel the operation with</param>
         /// <exception cref="global::System.InvalidOperationException"></exception>
         global::System.Threading.Tasks.Task<global::Greptile.IndexRepositoryResponse> IndexRepositoryAsync(
@@ -47,6 +50,7 @@ namespace Greptile
             string branch,
             bool? reload = default,
             bool? notify = default,
+            global::Greptile.AutoSDKRequestOptions? requestOptions = default,
             global::System.Threading.CancellationToken cancellationToken = default);
     }
 }

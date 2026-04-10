@@ -25,6 +25,7 @@ namespace Greptile
             Authorizations.Add(new global::Greptile.EndPointAuthorization
             {
                 Type = "Http",
+                SchemeId = "BearerAuth",
                 Location = "Header",
                 Name = "Bearer",
                 Value = apiKey,
