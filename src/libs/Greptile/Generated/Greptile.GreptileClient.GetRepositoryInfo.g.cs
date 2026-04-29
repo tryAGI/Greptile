@@ -125,7 +125,7 @@ namespace Greptile
                 PrepareGetRepositoryInfoRequest(
                     httpClient: HttpClient,
                     httpRequestMessage: __httpRequest,
-                    repositoryId: repositoryId);
+                    repositoryId: repositoryId!);
 
                 return __httpRequest;
             }
