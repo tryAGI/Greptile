@@ -21,6 +21,19 @@ namespace Greptile
         /// Search a codebase<br/>
         /// Search repositories in natural language and get back a list of relevant code files, functions, and snippets. Similar to the query endpoint but without the AI-generated answer. Use this endpoint when you only need the source references.
         /// </summary>
+        /// <param name="request"></param>
+        /// <param name="requestOptions">Per-request overrides such as headers, query parameters, timeout, retries, and response buffering.</param>
+        /// <param name="cancellationToken">The token to cancel the operation with</param>
+        /// <exception cref="global::Greptile.ApiException"></exception>
+        global::System.Threading.Tasks.Task<global::Greptile.AutoSDKHttpResponse<global::Greptile.SearchResponse>> SearchCodebaseAsResponseAsync(
+
+            global::Greptile.SearchRequest request,
+            global::Greptile.AutoSDKRequestOptions? requestOptions = default,
+            global::System.Threading.CancellationToken cancellationToken = default);
+        /// <summary>
+        /// Search a codebase<br/>
+        /// Search repositories in natural language and get back a list of relevant code files, functions, and snippets. Similar to the query endpoint but without the AI-generated answer. Use this endpoint when you only need the source references.
+        /// </summary>
         /// <param name="messages">
         /// The search query formatted as a messages array
         /// </param>
