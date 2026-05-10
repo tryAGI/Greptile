@@ -94,5 +94,6 @@ namespace Greptile
         public QueryRequest()
         {
         }
+
     }
 }
