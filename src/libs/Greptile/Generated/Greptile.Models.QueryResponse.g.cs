@@ -63,5 +63,6 @@ namespace Greptile
         public QueryResponse()
         {
         }
+
     }
 }
