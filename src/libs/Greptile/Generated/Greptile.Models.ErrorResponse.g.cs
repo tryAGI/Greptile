@@ -52,5 +52,6 @@ namespace Greptile
         public ErrorResponse()
         {
         }
+
     }
 }

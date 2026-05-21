@@ -21,6 +21,19 @@ namespace Greptile
         /// Index a repository<br/>
         /// Initiates processing or reprocessing of a specified repository. The repository must be indexed before it can be queried or searched. Indexing may take some time for large repositories.
         /// </summary>
+        /// <param name="request"></param>
+        /// <param name="requestOptions">Per-request overrides such as headers, query parameters, timeout, retries, and response buffering.</param>
+        /// <param name="cancellationToken">The token to cancel the operation with</param>
+        /// <exception cref="global::Greptile.ApiException"></exception>
+        global::System.Threading.Tasks.Task<global::Greptile.AutoSDKHttpResponse<global::Greptile.IndexRepositoryResponse>> IndexRepositoryAsResponseAsync(
+
+            global::Greptile.IndexRepositoryRequest request,
+            global::Greptile.AutoSDKRequestOptions? requestOptions = default,
+            global::System.Threading.CancellationToken cancellationToken = default);
+        /// <summary>
+        /// Index a repository<br/>
+        /// Initiates processing or reprocessing of a specified repository. The repository must be indexed before it can be queried or searched. Indexing may take some time for large repositories.
+        /// </summary>
         /// <param name="remote">
         /// The remote service hosting the repository<br/>
         /// Example: github
