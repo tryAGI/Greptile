@@ -10,11 +10,11 @@ namespace Greptile
     public enum IndexRepositoryRequestRemote
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         Github,
         /// <summary>
-        /// 
+        ///
         /// </summary>
         Gitlab,
     }

@@ -4,7 +4,7 @@
 namespace Greptile
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public sealed partial class Source
     {

@@ -10,11 +10,11 @@ namespace Greptile
     public enum RepositoryRefRemote
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         Github,
         /// <summary>
-        /// 
+        ///
         /// </summary>
         Gitlab,
     }

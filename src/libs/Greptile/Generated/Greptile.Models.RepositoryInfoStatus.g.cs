@@ -9,27 +9,27 @@ namespace Greptile
     public enum RepositoryInfoStatus
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         Cloning,
         /// <summary>
-        /// 
+        ///
         /// </summary>
         Completed,
         /// <summary>
-        /// 
+        ///
         /// </summary>
         Failed,
         /// <summary>
-        /// 
+        ///
         /// </summary>
         Indexed,
         /// <summary>
-        /// 
+        ///
         /// </summary>
         Processing,
         /// <summary>
-        /// 
+        ///
         /// </summary>
         Submitted,
     }
