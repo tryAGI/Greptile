@@ -20,7 +20,7 @@ namespace Greptile.JsonConverters
                     {
                         return global::Greptile.RepositoryInfoStatusExtensions.ToEnum(stringValue);
                     }
-                    
+
                     break;
                 }
                 case global::System.Text.Json.JsonTokenType.Number:
