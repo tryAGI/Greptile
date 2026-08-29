@@ -32,6 +32,7 @@ namespace Greptile
             typeof(global::Greptile.JsonConverters.UnixTimestampJsonConverter),
         })]
     [global::System.Text.Json.Serialization.JsonSerializable(typeof(global::Greptile.JsonSerializerContextTypes))]
+    [global::System.Text.Json.Serialization.JsonSerializable(typeof(global::System.Collections.Generic.List<object>), TypeInfoPropertyName = "SystemCollectionsGeneric_ObjectList")]
     [global::System.Text.Json.Serialization.JsonSerializable(typeof(global::Greptile.IndexRepositoryRequest))]
     [global::System.Text.Json.Serialization.JsonSerializable(typeof(global::Greptile.IndexRepositoryRequestRemote), TypeInfoPropertyName = "IndexRepositoryRequestRemote2")]
     [global::System.Text.Json.Serialization.JsonSerializable(typeof(string))]
